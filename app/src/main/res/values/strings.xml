@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Cloak</string>
+    <string name="cloak_server_name">Server Name</string>
+    <string name="cloak_uid">UID</string>
+    <string name="cloak_public_key">Public Key</string>
+    <string name="cloak_tieckt_time_hint">Ticket Time Hint</string>
+    <string name="cloak_num_conn">NumConn</string>
+    <string name="cloak_mask_browser">Mask Browser</string>
+</resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/proxy_cat">
+        <EditTextPreference
+            android:key="UID"
+            android:persistent="false"
+            android:title="@string/cloak_uid" />
+        <EditTextPreference
+            android:key="PublicKey"
+            android:persistent="false"
+            android:title="@string/cloak_public_key" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/feature_cat">
+        <EditTextPreference
+            android:key="ServerName"
+            android:persistent="false"
+            android:title="@string/cloak_server_name" />
+        <EditTextPreference
+            android:key="TicketTimeHint"
+            android:persistent="false"
+            android:inputType="numberDecimal"
+            android:digits="0123456789"
+            android:title="@string/cloak_tieckt_time_hint" />
+        <EditTextPreference
+            android:key="NumConn"
+            android:persistent="false"
+            android:inputType="numberDecimal"
+            android:digits="0123456789"
+            android:title="@string/cloak_num_conn" />
+        <ListPreference
+            android:key="MaskBrowser"
+            android:persistent="false"
+            android:title="@string/cloak_mask_browser"
+            android:summary="%s"
+            android:entries="@array/browsers"
+            android:entryValues="@array/browsers" />
+    </PreferenceCategory>
+</PreferenceScreen>
