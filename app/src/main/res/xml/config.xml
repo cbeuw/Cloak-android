@@ -2,6 +2,17 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/proxy_cat">
         <EditTextPreference
+            android:key="ProxyMethod"
+            android:persistent="false"
+            android:title="@string/cloak_proxy_method" />
+        <ListPreference
+            android:key="EncryptionMethod"
+            android:persistent="false"
+            android:title="@string/cloak_encryption_method"
+            android:summary="%s"
+            android:entries="@array/algorithms"
+            android:entryValues="@array/algorithms" />
+        <EditTextPreference
             android:key="UID"
             android:persistent="false"
             android:title="@string/cloak_uid" />
@@ -28,9 +39,9 @@
             android:digits="0123456789"
             android:title="@string/cloak_num_conn" />
         <ListPreference
-            android:key="MaskBrowser"
+            android:key="BrowserSig"
             android:persistent="false"
-            android:title="@string/cloak_mask_browser"
+            android:title="@string/cloak_browser_sig"
             android:summary="%s"
             android:entries="@array/browsers"
             android:entryValues="@array/browsers" />

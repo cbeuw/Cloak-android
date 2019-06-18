@@ -15,8 +15,9 @@ class ConfigFragment : PreferenceFragment() {
 
     fun onInitializePluginOptions(options: PluginOptions) {
         this._options = options
-        val ary = arrayOf(Pair("UID", ""), Pair("PublicKey",""), Pair("ServerName", "bing.com"),
-                Pair("TicketTimeHint", "3600"),Pair("NumConn","4"), Pair("MaskBrowser", "chrome"))
+        val ary = arrayOf(Pair("ProxyMethod","shadowsocks"), Pair("EncryptionMethod","plain"),
+                Pair("UID", ""), Pair("PublicKey",""), Pair("ServerName", "bing.com"),
+                Pair("TicketTimeHint", "3600"),Pair("NumConn","4"), Pair("BrowserSig", "chrome"))
         for (element in ary) {
             val key = element.first
             val defaultValue = element.second

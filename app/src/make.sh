@@ -63,7 +63,8 @@ fi
 export GOPATH=$DEPS/gopath
 
 echo "Getting Cloak source code"
-go get -u github.com/cbeuw/Cloak
+#go get -u github.com/cbeuw/Cloak
+git clone --single-branch --branch 2.0 https://github.com/cbeuw/Cloak $GOPATH/src/github.com/cbeuw/Cloak
 go get -u github.com/juju/ratelimit
 go get -u github.com/boltdb/bolt
 go get -u golang.org/x/crypto/curve25519
