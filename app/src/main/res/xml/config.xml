@@ -27,12 +27,6 @@
             android:persistent="false"
             android:title="@string/cloak_server_name" />
         <EditTextPreference
-            android:key="TicketTimeHint"
-            android:persistent="false"
-            android:inputType="numberDecimal"
-            android:digits="0123456789"
-            android:title="@string/cloak_tieckt_time_hint" />
-        <EditTextPreference
             android:key="NumConn"
             android:persistent="false"
             android:inputType="numberDecimal"

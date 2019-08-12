@@ -60,16 +60,14 @@ if [ ! -f "$ANDROID_X86_CC" ]; then
         --api $MIN_API --install-dir $ANDROID_X86_TOOLCHAIN
 fi
 
-export GOPATH=$DEPS/gopath
-
+pushd $DEPS
 echo "Getting Cloak source code"
-#go get -u github.com/cbeuw/Cloak
-git clone --single-branch --branch 2.0 https://github.com/cbeuw/Cloak $GOPATH/src/github.com/cbeuw/Cloak
-go get -u github.com/juju/ratelimit
-go get -u github.com/boltdb/bolt
-go get -u golang.org/x/crypto/curve25519
+GO111MOD=on
+git clone https://github.com/cbeuw/Cloak
+pushd Cloak
+go get
 
-pushd $GOPATH/src/github.com/cbeuw/Cloak/cmd/ck-client
+pushd cmd/ck-client
 
 echo "Cross compile ckclient for arm"
 echo $ANDROID_ARM_CC

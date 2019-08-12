@@ -3,8 +3,7 @@
     <string name="cloak_server_name">Server Name</string>
     <string name="cloak_uid">UID</string>
     <string name="cloak_public_key">Public Key</string>
-    <string name="cloak_tieckt_time_hint">Ticket Time Hint</string>
-    <string name="cloak_num_conn">NumConn</string>
+    <string name="cloak_num_conn">Number of Connections</string>
     <string name="cloak_browser_sig">Browser Signature</string>
     <string name="cloak_encryption_method">Encryption Method</string>
     <string name="cloak_proxy_method">Proxy Method</string>
