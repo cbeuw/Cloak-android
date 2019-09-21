@@ -17,7 +17,7 @@ class ConfigFragment : PreferenceFragment() {
         this._options = options
         val ary = arrayOf(Pair("ProxyMethod","shadowsocks"), Pair("EncryptionMethod","plain"),
                 Pair("UID", ""), Pair("PublicKey",""), Pair("ServerName", "bing.com"),
-                Pair("NumConn","4"), Pair("BrowserSig", "chrome"))
+                Pair("NumConn","4"), Pair("BrowserSig", "chrome"), Pair("StreamTimeout","300"))
         for (element in ary) {
             val key = element.first
             val defaultValue = element.second

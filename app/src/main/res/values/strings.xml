@@ -7,4 +7,5 @@
     <string name="cloak_browser_sig">Browser Signature</string>
     <string name="cloak_encryption_method">Encryption Method</string>
     <string name="cloak_proxy_method">Proxy Method</string>
+    <string name="cloak_stream_timeout">Stream Timeout</string>
 </resources>

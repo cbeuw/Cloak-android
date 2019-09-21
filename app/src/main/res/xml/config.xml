@@ -39,5 +39,11 @@
             android:summary="%s"
             android:entries="@array/browsers"
             android:entryValues="@array/browsers" />
+        <EditTextPreference
+            android:key="StreamTimeout"
+            android:persistent="false"
+            android:inputType="numberDecimal"
+            android:digits="0123456789"
+            android:title="@string/cloak_stream_timeout"/>
     </PreferenceCategory>
 </PreferenceScreen>

@@ -62,6 +62,7 @@ fi
 
 pushd $DEPS
 echo "Getting Cloak source code"
+rm -rf Cloak
 GO111MOD=on
 git clone https://github.com/cbeuw/Cloak
 pushd Cloak
