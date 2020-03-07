@@ -7,4 +7,4 @@ build
 captures
 .externalNativeBuild
 app/src/.deps
-app/src/jniLibs
+app/src/main/jniLibs
