@@ -1,9 +1,9 @@
 package com.github.shadowsocks.plugin.ck_client
 
 import android.os.Bundle
-import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.MenuItem
+import androidx.appcompat.widget.Toolbar
 import com.github.shadowsocks.plugin.ConfigurationActivity
 import com.github.shadowsocks.plugin.PluginOptions
 
