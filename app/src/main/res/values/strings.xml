@@ -6,6 +6,8 @@
     <string name="cloak_num_conn">Number of Connections</string>
     <string name="cloak_browser_sig">Browser Signature</string>
     <string name="cloak_encryption_method">Encryption Method</string>
+    <string name="cloak_transport">Transport</string>
     <string name="cloak_proxy_method">Proxy Method</string>
     <string name="cloak_stream_timeout">Stream Timeout</string>
+    <string name="cloak_keepalive">Keep Alive</string>
 </resources>

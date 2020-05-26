@@ -9,4 +9,8 @@
         <item>aes-gcm</item>
         <item>chacha20-poly1305</item>
     </string-array>
+    <string-array name="transportTypes">
+        <item>direct</item>
+        <item>CDN</item>
+    </string-array>
 </resources>
