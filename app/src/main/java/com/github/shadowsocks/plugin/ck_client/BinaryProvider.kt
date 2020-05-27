@@ -10,25 +10,20 @@ import java.io.FileNotFoundException
 
 class BinaryProvider : NativePluginProvider() {
     override fun populateFiles(provider: PathProvider) {
-        provider.addPath("ck-client", "755")
+        provider.addPath("ck-client", 0b111101101)
     }
 
     override fun getExecutable(): String {
-        val exec = context.applicationInfo.nativeLibraryDir + "/libck-client.so"
+        val exec = context!!.applicationInfo.nativeLibraryDir + "/libck-client.so"
         Log.d("execPath", exec)
         Log.d("execExists", File(exec).exists().toString())
         return exec
     }
 
-    override fun openFile(uri: Uri?): ParcelFileDescriptor {
-        if (uri == null) {
-            Log.d("URI", "null")
-            throw FileNotFoundException()
-        }
+    override fun openFile(uri: Uri): ParcelFileDescriptor {
         when (uri.path) {
             "/ck-client" -> return ParcelFileDescriptor.open(File(getExecutable()), ParcelFileDescriptor.MODE_READ_ONLY)
             else -> throw FileNotFoundException()
         }
-
     }
 }

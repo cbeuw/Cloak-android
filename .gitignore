@@ -8,3 +8,4 @@ captures
 .externalNativeBuild
 app/src/.deps
 app/src/main/jniLibs
+/app/release
