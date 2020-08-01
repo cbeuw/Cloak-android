@@ -14,8 +14,8 @@ android {
         applicationId "com.github.shadowsocks.plugin.ck_client"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 8
-        versionName '2.2.1'
+        versionCode 9
+        versionName '2.2.2'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
