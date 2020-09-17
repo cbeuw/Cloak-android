@@ -1,0 +1,50 @@
+# Android
+# Build your Android project with Gradle.
+# Add steps that test, sign, and distribute the APK, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/android
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  GOBIN:  '$(GOPATH)/bin' # Go binaries path
+  GOROOT: '$(Agent.BuildDirectory)/go' # Go installation path
+  GOPATH: '$(Agent.BuildDirectory)/gopath' # Go workspace path
+  modulePath: '$(GOPATH)/src/github.com/$(build.repository.name)' # Path to the module's code
+  ANDROID_NDK_HOME: '$(Agent.BuildDirectory)/android-ndk-r21d'
+
+steps:
+- script: |
+    mkdir -p '$(GOBIN)'
+    mkdir -p '$(GOPATH)/pkg'
+    mkdir -p '$(modulePath)'
+    shopt -s extglob
+    shopt -s dotglob
+    mv !(gopath) '$(modulePath)'
+    echo '##vso[task.prependpath]$(GOBIN)'
+    echo '##vso[task.prependpath]$(GOROOT)/bin'
+    wget "https://golang.org/dl/go1.15.2.linux-amd64.tar.gz"
+    tar -C '$(Agent.BuildDirectory)' -xzf "$(Agent.BuildDirectory)/go1.15.2.linux-amd64.tar.gz"
+  displayName: 'Set up the Go workspace'
+
+- script: |
+    wget "https://dl.google.com/android/repository/android-ndk-r21d-linux-x86_64.zip"
+    unzip "$(Agent.BuildDirectory)/android-ndk-r21d-linux-x86_64.zip"
+  displayName: 'Download Android ndk'
+
+- script: |
+    pushd $(Agent.BuildDirectory)/app/src
+    sh ./make.sh
+    popd
+  displayName: 'Cross compiling ck-client binaries'
+- task: Gradle@2
+  inputs:
+    workingDirectory: ''
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    publishJUnitResults: false
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'assembleDebug'
