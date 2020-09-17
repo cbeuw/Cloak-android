@@ -6,20 +6,19 @@
 #This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #You should have received a copy of the GNU General Public License along with this program. If not, see http://www.gnu.org/licenses/.
 
-
-function try () {
-"$@" || exit -1
+function try() {
+  "$@" || exit -1
 }
 
-[ -z "$ANDROID_NDK_HOME" ] && ANDROID_NDK_HOME=$ANDROID_HOME/ndk-bundle
+[ -z "$ANDROID_NDK_HOME" ] && ANDROID_NDK_HOME=ANDROID_SDK_ROOT/ndk-bundle
 
-if [ ! -d "$ANDROID_SDK_PATH" ]; then
-ANDROID_NDK_HOME=$USERPROFILE/AppData/Local/Android/Sdk/ndk-bundle
+if [ ! -d "$ANDROID_NDK_HOME" ]; then
+  ANDROID_NDK_HOME=$USERPROFILE/AppData/Local/Android/Sdk/ndk-bundle
 fi
 
 while [ ! -d "$ANDROID_NDK_HOME" ]; do
-echo "Path to ndk-bundle not found. Please enter the full path"
-read -p '' ANDROID_NDK_HOME
+  echo "Path to ndk-bundle not found. Please enter the full path"
+  read -p '' ANDROID_NDK_HOME
 done
 
 # Copyright (C) 2010 The Android Open Source Project
@@ -38,37 +37,41 @@ done
 #
 HOST_OS=$(uname -s)
 case $HOST_OS in
-  Darwin) HOST_OS=darwin;;
-  Linux) HOST_OS=linux;;
-  FreeBsd) HOST_OS=freebsd;;
-  CYGWIN*|*_NT-*) HOST_OS=windows;;
-  *) echo "ERROR: Unknown host operating system: $HOST_OS"
-     exit 1
+Darwin) HOST_OS=darwin ;;
+Linux) HOST_OS=linux ;;
+FreeBsd) HOST_OS=freebsd ;;
+CYGWIN* | *_NT-*) HOST_OS=windows ;;
+*)
+  echo "ERROR: Unknown host operating system: $HOST_OS"
+  exit 1
+  ;;
 esac
 echo "HOST_OS=$HOST_OS"
 
 HOST_ARCH=$(uname -m)
 case $HOST_ARCH in
-    i?86) HOST_ARCH=x86;;
-    x86_64|amd64) HOST_ARCH=x86_64;;
-    *) echo "ERROR: Unknown host CPU architecture: $HOST_ARCH"
-       exit 1
+i?86) HOST_ARCH=x86 ;;
+x86_64 | amd64) HOST_ARCH=x86_64 ;;
+*)
+  echo "ERROR: Unknown host CPU architecture: $HOST_ARCH"
+  exit 1
+  ;;
 esac
 echo "HOST_ARCH=$HOST_ARCH"
 
 # Detect 32-bit userland on 64-bit kernels
 HOST_TAG="$HOST_OS-$HOST_ARCH"
 case $HOST_TAG in
-  linux-x86_64|darwin-x86_64)
-    # we look for x86_64 or x86-64 in the output of 'file' for our shell
-    # the -L flag is used to dereference symlinks, just in case.
-    file -L "$SHELL" | grep -q "x86[_-]64"
-    if [ $? != 0 ]; then
-      HOST_ARCH=x86
-      HOST_TAG=$HOST_OS-x86
-      echo "HOST_ARCH=$HOST_ARCH (32-bit userland detected)"
-    fi
-    ;;
+linux-x86_64 | darwin-x86_64)
+  # we look for x86_64 or x86-64 in the output of 'file' for our shell
+  # the -L flag is used to dereference symlinks, just in case.
+  file -L "$SHELL" | grep -q "x86[_-]64"
+  if [ $? != 0 ]; then
+    HOST_ARCH=x86
+    HOST_TAG=$HOST_OS-x86
+    echo "HOST_ARCH=$HOST_ARCH (32-bit userland detected)"
+  fi
+  ;;
 esac
 # Check that we have 64-bit binaries on 64-bit system, otherwise fallback
 # on 32-bit ones. This gives us more freedom in packaging the NDK.
@@ -82,9 +85,7 @@ else
   echo "HOST_TAG=$HOST_TAG"
 fi
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 MIN_API=21
-DEPS=$(pwd)/.deps
 ANDROID_PREBUILT_TOOLCHAIN=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/$HOST_TAG
 
 ANDROID_ARM_CC=$ANDROID_PREBUILT_TOOLCHAIN/bin/armv7a-linux-androideabi${MIN_API}-clang
@@ -98,7 +99,8 @@ ANDROID_X86_STRIP=$ANDROID_PREBUILT_TOOLCHAIN/bin/i686-linux-android-strip
 ANDROID_X86_64_CC=$ANDROID_PREBUILT_TOOLCHAIN/bin/x86_64-linux-android${MIN_API}-clang
 ANDROID_X86_64_STRIP=$ANDROID_PREBUILT_TOOLCHAIN/bin/x86_64-linux-android-strip
 
-
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DEPS=$(pwd)/.deps
 try mkdir -p $DEPS $DIR/main/jniLibs/armeabi-v7a $DIR/main/jniLibs/x86 $DIR/main/jniLibs/arm64-v8a $DIR/main/jniLibs/x86_64
 
 cd $DEPS || exit
