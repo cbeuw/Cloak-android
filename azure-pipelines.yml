@@ -37,6 +37,7 @@ steps:
 
 - script: |
     pushd $(Agent.BuildDirectory)/app/src
+    ANDROID_NDK_HOME = "$(ANDROID_NDK_HOME)"
     sh ./make.sh
     popd
   displayName: 'Cross compiling ck-client binaries'
