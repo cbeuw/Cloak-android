@@ -7,7 +7,6 @@
 #You should have received a copy of the GNU General Public License along with this program. If not, see http://www.gnu.org/licenses/.
 
 
-
 function try () {
 "$@" || exit -1
 }
@@ -23,68 +22,113 @@ echo "Path to ndk-bundle not found. Please enter the full path"
 read -p '' ANDROID_NDK_HOME
 done
 
+# Copyright (C) 2010 The Android Open Source Project
+# Modified by Andy Wang (cbeuw.andy@gmail.com)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Detect host operating system and architecture
+# The 64-bit / 32-bit distinction gets tricky on Linux and Darwin because
+# uname -m returns the kernel's bit size, and it's possible to run with
+# a 64-bit kernel and a 32-bit userland.
+#
+HOST_OS=$(uname -s)
+case $HOST_OS in
+  Darwin) HOST_OS=darwin;;
+  Linux) HOST_OS=linux;;
+  FreeBsd) HOST_OS=freebsd;;
+  CYGWIN*|*_NT-*) HOST_OS=windows;;
+  *) echo "ERROR: Unknown host operating system: $HOST_OS"
+     exit 1
+esac
+echo "HOST_OS=$HOST_OS"
+
+HOST_ARCH=$(uname -m)
+case $HOST_ARCH in
+    i?86) HOST_ARCH=x86;;
+    x86_64|amd64) HOST_ARCH=x86_64;;
+    *) echo "ERROR: Unknown host CPU architecture: $HOST_ARCH"
+       exit 1
+esac
+echo "HOST_ARCH=$HOST_ARCH"
+
+# Detect 32-bit userland on 64-bit kernels
+HOST_TAG="$HOST_OS-$HOST_ARCH"
+case $HOST_TAG in
+  linux-x86_64|darwin-x86_64)
+    # we look for x86_64 or x86-64 in the output of 'file' for our shell
+    # the -L flag is used to dereference symlinks, just in case.
+    file -L "$SHELL" | grep -q "x86[_-]64"
+    if [ $? != 0 ]; then
+      HOST_ARCH=x86
+      HOST_TAG=$HOST_OS-x86
+      echo "HOST_ARCH=$HOST_ARCH (32-bit userland detected)"
+    fi
+    ;;
+esac
+# Check that we have 64-bit binaries on 64-bit system, otherwise fallback
+# on 32-bit ones. This gives us more freedom in packaging the NDK.
+if [ $HOST_ARCH = x86_64 -a ! -d $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/$HOST_TAG ]; then
+  HOST_TAG=$HOST_OS-x86
+  if [ $HOST_TAG = windows-x86 ]; then
+    HOST_TAG=windows
+  fi
+  echo "HOST_TAG=$HOST_TAG (no 64-bit prebuilt binaries detected)"
+else
+  echo "HOST_TAG=$HOST_TAG"
+fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 MIN_API=21
 DEPS=$(pwd)/.deps
-ANDROID_ARM_TOOLCHAIN=$DEPS/android-toolchain-${MIN_API}-arm
-ANDROID_ARM64_TOOLCHAIN=$DEPS/android-toolchain-21-arm64
-ANDROID_X86_TOOLCHAIN=$DEPS/android-toolchain-${MIN_API}-x86
+ANDROID_PREBUILT_TOOLCHAIN=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/$HOST_TAG
 
-ANDROID_ARM_CC=$ANDROID_ARM_TOOLCHAIN/bin/arm-linux-androideabi-clang
-ANDROID_ARM_STRIP=$ANDROID_ARM_TOOLCHAIN/bin/arm-linux-androideabi-strip
+ANDROID_ARM_CC=$ANDROID_PREBUILT_TOOLCHAIN/bin/armv7a-linux-androideabi${MIN_API}-clang
 
-ANDROID_ARM64_CC=$ANDROID_ARM64_TOOLCHAIN/bin/aarch64-linux-android-clang
-ANDROID_ARM64_STRIP=$ANDROID_ARM64_TOOLCHAIN/bin/aarch64-linux-android-strip
+ANDROID_ARM64_CC=$ANDROID_PREBUILT_TOOLCHAIN/bin/aarch64-linux-android21-clang
+ANDROID_ARM64_STRIP=$ANDROID_PREBUILT_TOOLCHAIN/bin/aarch64-linux-android-strip
 
-ANDROID_X86_CC=$ANDROID_X86_TOOLCHAIN/bin/i686-linux-android-clang
-ANDROID_X86_STRIP=$ANDROID_X86_TOOLCHAIN/bin/i686-linux-android-strip
+ANDROID_X86_CC=$ANDROID_PREBUILT_TOOLCHAIN/bin/i686-linux-android${MIN_API}-clang
+ANDROID_X86_STRIP=$ANDROID_PREBUILT_TOOLCHAIN/bin/i686-linux-android-strip
 
-try mkdir -p $DEPS $DIR/main/jniLibs/armeabi-v7a $DIR/main/jniLibs/x86 $DIR/main/jniLibs/arm64-v8a
+ANDROID_X86_64_CC=$ANDROID_PREBUILT_TOOLCHAIN/bin/x86_64-linux-android${MIN_API}-clang
+ANDROID_X86_64_STRIP=$ANDROID_PREBUILT_TOOLCHAIN/bin/x86_64-linux-android-strip
 
-if [ ! -f "$ANDROID_ARM_CC" ]; then
-    echo "Make standalone toolchain for ARM arch"
-    $ANDROID_NDK_HOME/build/tools/make_standalone_toolchain.py --arch arm \
-        --api $MIN_API --install-dir $ANDROID_ARM_TOOLCHAIN
-fi
 
-if [ ! -f "$ANDROID_ARM64_CC" ]; then
-    echo "Make standalone toolchain for ARM64 arch"
-    $ANDROID_NDK_HOME/build/tools/make_standalone_toolchain.py --arch arm64 \
-        --api 21 --install-dir $ANDROID_ARM64_TOOLCHAIN
-fi
+try mkdir -p $DEPS $DIR/main/jniLibs/armeabi-v7a $DIR/main/jniLibs/x86 $DIR/main/jniLibs/arm64-v8a $DIR/main/jniLibs/x86_64
 
-if [ ! -f "$ANDROID_X86_CC" ]; then
-    echo "Make standalone toolchain for X86 arch"
-    $ANDROID_NDK_HOME/build/tools/make_standalone_toolchain.py --arch x86 \
-        --api $MIN_API --install-dir $ANDROID_X86_TOOLCHAIN
-fi
-
-pushd $DEPS
+cd $DEPS || exit
 echo "Getting Cloak source code"
 rm -rf Cloak
 GO111MOD=on
 git clone https://github.com/cbeuw/Cloak
-pushd Cloak
-go get
 
-pushd cmd/ck-client
+cd Cloak || exit
+go get -u
 
-echo "Cross compile ckclient for arm"
-echo $ANDROID_ARM_CC
-try env CGO_ENABLED=1 CC=$ANDROID_ARM_CC GOOS=android GOARCH=arm GOARM=7 go build -ldflags="-s -w"
-try $ANDROID_ARM_STRIP ck-client
+cd cmd/ck-client || exit
+
+echo "Cross compiling ckclient for arm"
+try env CGO_ENABLED=1 CC="$ANDROID_ARM_CC" GOOS=android GOARCH=arm GOARM=7 go build -ldflags="-s -w"
 try mv ck-client $DIR/main/jniLibs/armeabi-v7a/libck-client.so
 
-echo "Cross compile ckclient for arm64"
-try env CGO_ENABLED=1 CC=$ANDROID_ARM64_CC GOOS=android GOARCH=arm64 go build -ldflags="-s -w"
-try $ANDROID_ARM64_STRIP ck-client
-try mv ck-client $DIR/main/jniLibs//arm64-v8a/libck-client.so
+echo "Cross compiling ckclient for arm64"
+try env CGO_ENABLED=1 CC="$ANDROID_ARM64_CC" GOOS=android GOARCH=arm64 go build -ldflags="-s -w"
+try "$ANDROID_ARM64_STRIP" ck-client
+try mv ck-client $DIR/main/jniLibs/arm64-v8a/libck-client.so
 
-echo "Cross compile ckclient for x86"
-try env CGO_ENABLED=1 CC=$ANDROID_X86_CC GOOS=android GOARCH=386 go build -ldflags="-s -w"
-try $ANDROID_X86_STRIP ck-client
+echo "Cross compiling ckclient for x86"
+try env CGO_ENABLED=1 CC="$ANDROID_X86_CC" GOOS=android GOARCH=386 go build -ldflags="-s -w"
+try "$ANDROID_X86_STRIP" ck-client
 try mv ck-client $DIR/main/jniLibs/x86/libck-client.so
-popd
+
+echo "Cross compiling ckclient for x86_64"
+try env CGO_ENABLED=1 CC="$ANDROID_X86_64_CC" GOOS=android GOARCH=amd64 go build -ldflags="-s -w"
+try "$ANDROID_X86_64_STRIP" ck-client
+try mv ck-client $DIR/main/jniLibs/x86_64/libck-client.so
 
 echo "Success"
