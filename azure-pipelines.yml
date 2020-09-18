@@ -18,6 +18,9 @@ variables:
 
 steps:
 - script: |
+    ls -1 $(Build.SourcesDirectory)
+
+- script: |
     mkdir -p '$(GOBIN)'
     mkdir -p '$(GOPATH)/pkg'
     mkdir -p '$(modulePath)'
@@ -36,7 +39,6 @@ steps:
 #   displayName: 'Download Android ndk'
 
 - script: |
-    ls $(Build.SourcesDirectory)
     pushd $(Build.SourcesDirectory)/app/src
     ANDROID_NDK_HOME="$(ANDROID_NDK_HOME)"
     sh ./make.sh
