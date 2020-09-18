@@ -34,8 +34,9 @@ steps:
   displayName: 'Download Android ndk'
 
 - script: |
-    pushd '$(Build.SourcesDirectory)/app/src'
     ANDROID_NDK_HOME="$(ANDROID_NDK_HOME)"
+    pushd '$(Build.SourcesDirectory)/app/src'
+    chmod +x ./make.sh
     ./make.sh
     popd
   displayName: 'Cross compiling ck-client binaries'
