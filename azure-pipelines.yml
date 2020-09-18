@@ -36,7 +36,7 @@ steps:
 #   displayName: 'Download Android ndk'
 
 - script: |
-    ls -1 $(Build.SourcesDirectory)/app/src
+    ls -1 $(Build.SourcesDirectory)
     cd '$(Build.SourcesDirectory)/app/src'
     ANDROID_NDK_HOME="$(ANDROID_NDK_HOME)"
     sh ./make.sh
