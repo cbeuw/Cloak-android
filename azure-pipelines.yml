@@ -36,7 +36,7 @@ steps:
 - script: |
     pushd '$(Build.SourcesDirectory)/app/src'
     ANDROID_NDK_HOME="$(ANDROID_NDK_HOME)"
-    sh ./make.sh
+    ./make.sh
     popd
   displayName: 'Cross compiling ck-client binaries'
 - task: Gradle@2
