@@ -11,9 +11,9 @@ pool:
 
 variables:
   GOBIN:  '$(GOPATH)/bin' # Go binaries path
-  GOROOT: '/usr/local/go1.15' # Go installation path
+  GOROOT: '$(Agent.BuildDirectory)/go' # Go installation path
   GOPATH: '$(Agent.BuildDirectory)/gopath' # Go workspace path
-  #ANDROID_NDK_HOME: '$(Agent.BuildDirectory)/android-ndk-r21d'
+  ANDROID_NDK_HOME: '$(Agent.BuildDirectory)/android-ndk-r21d'
 
 steps:
 - script: |
@@ -24,14 +24,14 @@ steps:
     shopt -s dotglob
     echo '##vso[task.prependpath]$(GOBIN)'
     echo '##vso[task.prependpath]$(GOROOT)/bin'
-#    wget "https://golang.org/dl/go1.15.2.linux-amd64.tar.gz" --output-document "$(Agent.BuildDirectory)/go1.15.2.tar.gz"
-#    tar -C '$(Agent.BuildDirectory)' -xzf "$(Agent.BuildDirectory)/go1.15.2.tar.gz"
+    wget "https://golang.org/dl/go1.15.2.linux-amd64.tar.gz" --output-document "$(Agent.BuildDirectory)/go1.15.2.tar.gz"
+    tar -C '$(Agent.BuildDirectory)' -xzf "$(Agent.BuildDirectory)/go1.15.2.tar.gz"
   displayName: 'Set up the Go workspace'
 
-# - script: |
-#     wget "https://dl.google.com/android/repository/android-ndk-r21d-linux-x86_64.zip" --output-document "$(Agent.BuildDirectory)/android-ndk-r21d.zip"
-#     unzip "$(Agent.BuildDirectory)/android-ndk-r21d.zip" -d '$(Agent.BuildDirectory)'
-#   displayName: 'Download Android ndk'
+- script: |
+    wget "https://dl.google.com/android/repository/android-ndk-r21d-linux-x86_64.zip" --output-document "$(Agent.BuildDirectory)/android-ndk-r21d.zip"
+    unzip "$(Agent.BuildDirectory)/android-ndk-r21d.zip" -d '$(Agent.BuildDirectory)'
+  displayName: 'Download Android ndk'
 
 - script: |
     ANDROID_NDK_HOME="${ANDROID_SDK_ROOT}/ndk-bundle/"
@@ -41,11 +41,11 @@ steps:
     popd
   displayName: 'Cross compiling ck-client binaries'
   continueOnError: false
-# - task: Gradle@2
-#   inputs:
-#     workingDirectory: ''
-#     gradleWrapperFile: 'gradlew'
-#     gradleOptions: '-Xmx3072m'
-#     publishJUnitResults: false
-#     testResultsFiles: '**/TEST-*.xml'
-#     tasks: 'assembleDebug'
+- task: Gradle@2
+  inputs:
+    workingDirectory: ''
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    publishJUnitResults: false
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'assembleDebug'
