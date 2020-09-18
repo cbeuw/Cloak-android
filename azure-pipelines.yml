@@ -18,9 +18,6 @@ variables:
 
 steps:
 - script: |
-    ls -1 $(Build.SourcesDirectory)/app
-
-- script: |
     mkdir -p '$(GOBIN)'
     mkdir -p '$(GOPATH)/pkg'
     mkdir -p '$(modulePath)'
@@ -39,10 +36,9 @@ steps:
 #   displayName: 'Download Android ndk'
 
 - script: |
-    pushd $(Build.SourcesDirectory)/app/src
+    cd '$(Build.SourcesDirectory)/app/src'
     ANDROID_NDK_HOME="$(ANDROID_NDK_HOME)"
     sh ./make.sh
-    popd
   displayName: 'Cross compiling ck-client binaries'
 - task: Gradle@2
   inputs:
