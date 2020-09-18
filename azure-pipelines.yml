@@ -18,6 +18,9 @@ variables:
 
 steps:
 - script: |
+    ls -1 $(Build.SourcesDirectory)
+
+- script: |
     mkdir -p '$(GOBIN)'
     mkdir -p '$(GOPATH)/pkg'
     mkdir -p '$(modulePath)'
