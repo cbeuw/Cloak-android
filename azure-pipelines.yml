@@ -37,6 +37,8 @@ steps:
 
 - script: |
     ls -1 $(Build.SourcesDirectory)
+
+- script: |
     cd '$(Build.SourcesDirectory)/app/src'
     ANDROID_NDK_HOME="$(ANDROID_NDK_HOME)"
     sh ./make.sh
