@@ -21,6 +21,7 @@ steps:
     ls -1 $(Build.SourcesDirectory)
 
 - script: |
+    ls -1 $(Build.SourcesDirectory)
     mkdir -p '$(GOBIN)'
     mkdir -p '$(GOPATH)/pkg'
     mkdir -p '$(modulePath)'
@@ -29,6 +30,7 @@ steps:
     mv !(gopath) '$(modulePath)'
     echo '##vso[task.prependpath]$(GOBIN)'
     echo '##vso[task.prependpath]$(GOROOT)/bin'
+    ls -1 $(Build.SourcesDirectory)
 #   wget "https://golang.org/dl/go1.15.2.linux-amd64.tar.gz" --output-document "$(Agent.BuildDirectory)/go1.15.2.tar.gz"
 #   tar -C '$(Agent.BuildDirectory)' -xzf "$(Agent.BuildDirectory)/go1.15.2.tar.gz"
   displayName: 'Set up the Go workspace'
