@@ -11,9 +11,9 @@ pool:
 
 variables:
   GOBIN:  '$(GOPATH)/bin' # Go binaries path
-  GOROOT: '/usr/local/go1.15.2' # Go installation path
+  GOROOT: '/usr/local/go1.15' # Go installation path
   GOPATH: '$(Agent.BuildDirectory)/gopath' # Go workspace path
-  ANDROID_NDK_HOME: '$(Agent.BuildDirectory)/android-ndk-r21d'
+  #ANDROID_NDK_HOME: '$(Agent.BuildDirectory)/android-ndk-r21d'
 
 steps:
 - script: |
