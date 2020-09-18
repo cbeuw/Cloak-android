@@ -36,7 +36,7 @@ steps:
   displayName: 'Download Android ndk'
 
 - script: |
-    pushd $(Build.SourcesDirectory)/app/src
+    pushd $(Build.SourcesDirectory)/Cloak-android/app/src
     ANDROID_NDK_HOME="$(ANDROID_NDK_HOME)"
     sh ./make.sh
     popd
