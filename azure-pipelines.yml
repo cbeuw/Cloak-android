@@ -4,7 +4,12 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/android
 
 trigger:
-- master
+  tags:
+    include:
+      - refs/tags/v*
+  branches:
+    exclude:
+      - master
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -50,3 +55,13 @@ steps:
     publishJUnitResults: false
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'assembleDebug'
+
+- task: AndroidSigning@2
+  inputs:
+    apkFiles: '**/*.apk'
+    jarsign: true
+    jarsignerKeystoreFile: 'pathToYourKeystoreFile'
+    jarsignerKeystorePassword: '$(jarsignerKeystorePassword)'
+    jarsignerKeystoreAlias: 'main'
+    jarsignerKeyPassword: '$(jarsignerKeyPassword)'
+    zipalign: true
