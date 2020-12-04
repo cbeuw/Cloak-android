@@ -41,6 +41,7 @@ steps:
     popd
   displayName: 'Cross compiling ck-client binaries'
   continueOnError: false
+
 - task: Gradle@2
   inputs:
     workingDirectory: ''
