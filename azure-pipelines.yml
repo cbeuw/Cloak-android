@@ -40,7 +40,6 @@ steps:
 
 - script: |
     chmod +x ./gradlew
-#    ANDROID_NDK_HOME="${ANDROID_SDK_ROOT}/ndk-bundle/"
     pushd '$(Build.SourcesDirectory)/app/src'
     chmod +x ./make.sh
     ./make.sh
