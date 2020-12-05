@@ -9,6 +9,7 @@ android {
     signingConfigs {
     }
     compileSdkVersion 29
+    ndkVersion "20.0.5594570"
     //buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.github.shadowsocks.plugin.ck_client"
@@ -17,6 +18,7 @@ android {
         versionCode 9
         versionName '2.2.2'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        archivesBaseName = "ck-client-$versionName"
     }
     buildTypes {
         release {
@@ -37,4 +39,16 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
+
+task printVersionName {
+    doLast {
+        println android.defaultConfig.versionName
+    }
+}
+
+task printNDKPath {
+    doLast {
+        println android.ndkDirectory
+    }
 }
