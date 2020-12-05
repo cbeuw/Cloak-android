@@ -6,10 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 
 android {
-    signingConfigs {
-    }
     compileSdkVersion 29
-    //buildToolsVersion '26.0.2'
+    ndkVersion "21.3.6528147"
     defaultConfig {
         applicationId "com.github.shadowsocks.plugin.ck_client"
         minSdkVersion 21
@@ -24,7 +22,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    productFlavors {
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "ck-client-${defaultConfig.versionName}.apk"
+        }
     }
 }
 
@@ -37,4 +38,16 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
+
+task printVersionName {
+    doLast {
+        println android.defaultConfig.versionName
+    }
+}
+
+task printNDKPath {
+    doLast {
+        println android.ndkDirectory
+    }
 }

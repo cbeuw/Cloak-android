@@ -1,0 +1,75 @@
+# Android
+# Build your Android project with Gradle.
+# Add steps that test, sign, and distribute the APK, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/android
+
+trigger:
+  tags:
+    include:
+      - refs/tags/v*
+  branches:
+    exclude:
+      - "*"
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  GOBIN:  '$(GOPATH)/bin' # Go binaries path
+  GOROOT: '$(Agent.BuildDirectory)/go' # Go installation path
+  GOPATH: '$(Agent.BuildDirectory)/gopath' # Go workspace path
+
+steps:
+- script: |
+    mkdir -p '$(GOBIN)'
+    mkdir -p '$(GOPATH)/pkg'
+    mkdir -p '$(modulePath)'
+    shopt -s extglob
+    shopt -s dotglob
+    echo '##vso[task.prependpath]$(GOBIN)'
+    echo '##vso[task.prependpath]$(GOROOT)/bin'
+    wget "https://golang.org/dl/go1.15.2.linux-amd64.tar.gz" --output-document "$(Agent.BuildDirectory)/go1.15.2.tar.gz"
+    tar -C '$(Agent.BuildDirectory)' -xzf "$(Agent.BuildDirectory)/go1.15.2.tar.gz"
+  displayName: 'Set up the Go workspace'
+
+- script: |
+    chmod +x ./gradlew
+    pushd '$(Build.SourcesDirectory)/app/src'
+    chmod +x ./make.sh
+    ./make.sh
+    popd
+  displayName: 'Cross compiling ck-client binaries'
+  continueOnError: false
+
+- task: Gradle@2
+  inputs:
+    workingDirectory: ''
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    publishJUnitResults: false
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'assembleRelease'
+
+- task: AndroidSigning@2
+  inputs:
+    apkFiles: '**/*.apk'
+    jarsign: true
+    jarsignerKeystoreFile: 'mainAPK.jks'
+    jarsignerKeystorePassword: '$(jarsignerKeystorePassword)'
+    jarsignerKeystoreAlias: 'main'
+    jarsignerKeyPassword: '$(jarsignerKeyPassword)'
+    zipalign: true
+
+- task: CopyFiles@2
+  inputs:
+    contents: '**/*.apk'
+    targetFolder: '$(build.artifactStagingDirectory)'
+
+- task: GitHubRelease@0
+  inputs:
+    gitHubConnection: github.com_cbeuw
+    repositoryName: '$(Build.Repository.Name)'
+    action: 'create' # Options: create, edit, delete
+    target: '$(Build.SourceVersion)' # Required when action == Create || Action == Edit
+    tagSource: 'auto' # Required when action == Create# Options: auto, manual
+    addChangeLog: false # Optional
