@@ -69,6 +69,7 @@ steps:
   inputs:
     gitHubConnection: github.com_cbeuw
     repositoryName: '$(Build.Repository.Name)'
+    assets: '$(build.artifactStagingDirectory)/app/build/outputs/apk/release/*.apk'
     action: 'create' # Options: create, edit, delete
     target: '$(Build.SourceVersion)' # Required when action == Create || Action == Edit
     tagSource: 'auto' # Required when action == Create# Options: auto, manual
