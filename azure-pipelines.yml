@@ -18,7 +18,7 @@ variables:
   GOBIN:  '$(GOPATH)/bin' # Go binaries path
   GOROOT: '$(Agent.BuildDirectory)/go' # Go installation path
   GOPATH: '$(Agent.BuildDirectory)/gopath' # Go workspace path
-  ANDROID_NDK_HOME: '$(Agent.BuildDirectory)/android-ndk-r21d'
+#  ANDROID_NDK_HOME: '$(Agent.BuildDirectory)/android-ndk-r21d'
 
 steps:
 - script: |
@@ -33,14 +33,14 @@ steps:
     tar -C '$(Agent.BuildDirectory)' -xzf "$(Agent.BuildDirectory)/go1.15.2.tar.gz"
   displayName: 'Set up the Go workspace'
 
-- script: |
-    wget "https://dl.google.com/android/repository/android-ndk-r21d-linux-x86_64.zip" --output-document "$(Agent.BuildDirectory)/android-ndk-r21d.zip"
-    unzip "$(Agent.BuildDirectory)/android-ndk-r21d.zip" -d '$(Agent.BuildDirectory)'
-  displayName: 'Download Android ndk'
+#- script: |
+#    wget "https://dl.google.com/android/repository/android-ndk-r21d-linux-x86_64.zip" --output-document "$(Agent.BuildDirectory)/android-ndk-r21d.zip"
+#    unzip "$(Agent.BuildDirectory)/android-ndk-r21d.zip" -d '$(Agent.BuildDirectory)'
+#  displayName: 'Download Android ndk'
 
 - script: |
     chmod +x ./gradlew
-    ANDROID_NDK_HOME="${ANDROID_SDK_ROOT}/ndk-bundle/"
+#    ANDROID_NDK_HOME="${ANDROID_SDK_ROOT}/ndk-bundle/"
     pushd '$(Build.SourcesDirectory)/app/src'
     chmod +x ./make.sh
     ./make.sh
