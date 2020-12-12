@@ -26,9 +26,9 @@
             android:persistent="false"
             android:title="@string/cloak_server_name" />
         <EditTextPreference
-            android:key="CdnHttpHost"
+            android:key="CDNOriginHost"
             android:persistent="false"
-            android:title="@string/cloak_cdn_http_host" />
+            android:title="@string/cloak_cdn_origin_host" />
         <ListPreference
             android:key="BrowserSig"
             android:persistent="false"
