@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Cloak</string>
     <string name="cloak_server_name">Server Name</string>
+    <string name="cloak_cdn_origin_host">CDN mode HTTP Origin Override</string>
     <string name="cloak_uid">UID</string>
     <string name="cloak_public_key">Public Key</string>
     <string name="cloak_num_conn">Number of Connections</string>
