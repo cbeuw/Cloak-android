@@ -6,7 +6,8 @@
     </string-array>
     <string-array name="algorithms">
         <item>plain</item>
-        <item>aes-gcm</item>
+        <item>aes-128-gcm</item>
+        <item>aes-256-gcm</item>
         <item>chacha20-poly1305</item>
     </string-array>
     <string-array name="transportTypes">
