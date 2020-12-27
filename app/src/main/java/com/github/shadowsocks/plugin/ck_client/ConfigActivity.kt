@@ -10,20 +10,17 @@ import com.github.shadowsocks.plugin.PluginOptions
 
 class ConfigActivity : ConfigurationActivity(), Toolbar.OnMenuItemClickListener {
 
-    fun getChild(): ConfigFragment {
+    private fun getChild(): ConfigFragment {
         return supportFragmentManager.findFragmentById(R.id.content) as ConfigFragment
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_config)
-        val toolbar = findViewById<Toolbar>(R.id.toolbar) as Toolbar
-        toolbar.setTitle(getTitle())
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        toolbar.title = title
         toolbar.setNavigationIcon(R.drawable.ic_navigation_close)
-        toolbar.setNavigationOnClickListener(
-                fun(_) {
-                    onBackPressed()
-                })
+        toolbar.setNavigationOnClickListener { onBackPressed()}
         toolbar.inflateMenu(R.menu.menu_config)
         toolbar.setOnMenuItemClickListener(this)
     }
@@ -33,14 +30,14 @@ class ConfigActivity : ConfigurationActivity(), Toolbar.OnMenuItemClickListener 
     }
 
     override fun onMenuItemClick(item: MenuItem): Boolean {
-        when (item.getItemId()) {
+        return when (item.itemId) {
             R.id.action_apply -> {
-                Log.d("options", getChild()._options.toString())
-                saveChanges(getChild()._options)
+                Log.d("options", getChild().options.toString())
+                saveChanges(getChild().options)
                 finish()
-                return true
+                true
             }
-            else -> return false
+            else -> false
         }
     }
 }

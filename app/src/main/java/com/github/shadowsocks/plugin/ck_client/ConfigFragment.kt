@@ -10,10 +10,10 @@ import com.github.shadowsocks.plugin.PluginOptions
 
 
 class ConfigFragment : PreferenceFragmentCompat() {
-    var _options = PluginOptions()
+    var options = PluginOptions()
 
     fun onInitializePluginOptions(options: PluginOptions) {
-        this._options = options
+        this.options = options
         val ary = arrayOf(Pair("ProxyMethod","shadowsocks"), Pair("EncryptionMethod","plain"),
                 Pair("Transport", "direct"), Pair("UID", ""), Pair("PublicKey",""), Pair("ServerName", "bing.com"),
                 Pair("CDNOriginHost", ""), Pair("NumConn","4"), Pair("BrowserSig", "chrome"),
@@ -22,7 +22,7 @@ class ConfigFragment : PreferenceFragmentCompat() {
             val key = element.first
             val defaultValue = element.second
             val pref: Preference? = findPreference(key)
-            val value: String? = options.get(key)?:defaultValue
+            val value: String? = options[key] ?:defaultValue
             when (pref) {
                 is ListPreference -> {
                     pref.value = value
@@ -32,10 +32,10 @@ class ConfigFragment : PreferenceFragmentCompat() {
                 }
             }
             // we want all preferences to be put into the options, not only the changed ones
-            options.put(key, value)
+            options[key] = value
             pref!!.setOnPreferenceChangeListener(
-                    fun(_: Preference, value: Any): Boolean {
-                        options.put(key, value.toString())
+                    fun(_, value: Any): Boolean {
+                        options[key] = value.toString()
                         return true
                     }
             )
@@ -44,13 +44,13 @@ class ConfigFragment : PreferenceFragmentCompat() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(PluginContract.EXTRA_OPTIONS, _options.toString())
+        outState.putString(PluginContract.EXTRA_OPTIONS, options.toString())
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         if (savedInstanceState != null) {
-            _options = PluginOptions(savedInstanceState.getString(PluginContract.EXTRA_OPTIONS))
-            onInitializePluginOptions(_options)
+            options = PluginOptions(savedInstanceState.getString(PluginContract.EXTRA_OPTIONS))
+            onInitializePluginOptions(options)
         }
         addPreferencesFromResource(R.xml.config)
     }
