@@ -1,16 +1,15 @@
 package com.github.shadowsocks.plugin.ck_client
 
 import android.os.Bundle
-import android.preference.EditTextPreference
-import android.preference.ListPreference
-import android.preference.Preference
-import android.preference.PreferenceFragment
-import android.view.View
+import androidx.preference.EditTextPreference
+import androidx.preference.ListPreference
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import com.github.shadowsocks.plugin.PluginContract
 import com.github.shadowsocks.plugin.PluginOptions
 
 
-class ConfigFragment : PreferenceFragment() {
+class ConfigFragment : PreferenceFragmentCompat() {
     var _options = PluginOptions()
 
     fun onInitializePluginOptions(options: PluginOptions) {
@@ -22,20 +21,19 @@ class ConfigFragment : PreferenceFragment() {
         for (element in ary) {
             val key = element.first
             val defaultValue = element.second
-            val pref = findPreference(key)
-            val current: String? = options.get(key)
-            val value = current ?: defaultValue
+            val pref: Preference? = findPreference(key)
+            val value: String? = options.get(key)?:defaultValue
             when (pref) {
                 is ListPreference -> {
-                    pref.setValue(value)
+                    pref.value = value
                 }
                 is EditTextPreference -> {
-                    pref.setText(value)
+                    pref.text = value
                 }
             }
             // we want all preferences to be put into the options, not only the changed ones
             options.put(key, value)
-            pref.setOnPreferenceChangeListener(
+            pref!!.setOnPreferenceChangeListener(
                     fun(_: Preference, value: Any): Boolean {
                         options.put(key, value.toString())
                         return true
@@ -49,8 +47,7 @@ class ConfigFragment : PreferenceFragment() {
         outState.putString(PluginContract.EXTRA_OPTIONS, _options.toString())
     }
 
-    override fun onViewCreated(vidw: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(vidw, savedInstanceState)
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         if (savedInstanceState != null) {
             _options = PluginOptions(savedInstanceState.getString(PluginContract.EXTRA_OPTIONS))
             onInitializePluginOptions(_options)

@@ -11,7 +11,7 @@ import com.github.shadowsocks.plugin.PluginOptions
 class ConfigActivity : ConfigurationActivity(), Toolbar.OnMenuItemClickListener {
 
     fun getChild(): ConfigFragment {
-        return getFragmentManager().findFragmentById(R.id.content) as ConfigFragment
+        return supportFragmentManager.findFragmentById(R.id.content) as ConfigFragment
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
