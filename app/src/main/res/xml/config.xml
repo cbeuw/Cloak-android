@@ -26,6 +26,10 @@
             android:persistent="false"
             android:title="@string/cloak_server_name" />
         <EditTextPreference
+            android:key="AlternativeNames"
+            android:persistent="false"
+            android:title="@string/cloak_alternative_names" />
+        <EditTextPreference
             android:key="CDNOriginHost"
             android:persistent="false"
             android:title="@string/cloak_cdn_origin_host" />
