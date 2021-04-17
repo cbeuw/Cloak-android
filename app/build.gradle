@@ -49,6 +49,6 @@ task printVersionName {
 
 task printNDKPath {
     doLast {
-        println android.ndkDirectory
+        println android.sdkComponents.ndkDirectory.get()
     }
 }
