@@ -15,9 +15,12 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
+  GOVERSION: '1.15.2'
+  NDKVERSION: 'r21e'
   GOBIN:  '$(GOPATH)/bin' # Go binaries path
   GOROOT: '$(Agent.BuildDirectory)/go' # Go installation path
   GOPATH: '$(Agent.BuildDirectory)/gopath' # Go workspace path
+  ANDROID_NDK_HOME: '$(Agent.BuildDirectory)/android-ndk-$(NDKVERSION)' # NDK path
 
 steps:
 - script: |
@@ -28,9 +31,14 @@ steps:
     shopt -s dotglob
     echo '##vso[task.prependpath]$(GOBIN)'
     echo '##vso[task.prependpath]$(GOROOT)/bin'
-    wget "https://golang.org/dl/go1.15.2.linux-amd64.tar.gz" --output-document "$(Agent.BuildDirectory)/go1.15.2.tar.gz"
-    tar -C '$(Agent.BuildDirectory)' -xzf "$(Agent.BuildDirectory)/go1.15.2.tar.gz"
+    wget "https://golang.org/dl/go$(GOVERSION).linux-amd64.tar.gz" --output-document "$(Agent.BuildDirectory)/go$(GOVERSION).tar.gz"
+    tar -C '$(Agent.BuildDirectory)' -xzf "$(Agent.BuildDirectory)/go$(GOVERSION).tar.gz"
   displayName: 'Set up the Go workspace'
+
+- script: |
+    wget "https://dl.google.com/android/repository/android-ndk-$(NDKVERSION)-linux-x86_64.zip" --output-document "$(Agent.BuildDirectory)/ndk-$(NDKVERSION).zip"
+    unzip "$(Agent.BuildDirectory)/ndk-$(NDKVERSION).zip" -d '$(Agent.BuildDirectory)'
+  displayName: 'Download NDK'
 
 - script: |
     chmod +x ./gradlew
