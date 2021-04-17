@@ -77,13 +77,13 @@ function try() {
 }
 
 pushd ../..
-ANDROID_NDK_HOME="$(./gradlew -q printNDKPath)"
+"${ANDROID_NDK_HOME:=$(./gradlew -q printNDKPath)}"
 CK_RELEASE_TAG=v"$(./gradlew -q printVersionName)"
 popd
 
 while [ ! -d "$ANDROID_NDK_HOME" ]; do
-  echo "Path to ndk-bundle not found. Please enter the full path"
-  read -p '' ANDROID_NDK_HOME
+  echo "Path to ndk-bundle not found"
+  exit -1
 done
 
 getHostTag
