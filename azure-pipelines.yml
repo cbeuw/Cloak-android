@@ -15,8 +15,8 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  GOVERSION: '1.15.2'
-  NDKVERSION: 'r21e'
+  GOVERSION: '1.18'
+  NDKVERSION: 'r23b'
   GOBIN:  '$(GOPATH)/bin' # Go binaries path
   GOROOT: '$(Agent.BuildDirectory)/go' # Go installation path
   GOPATH: '$(Agent.BuildDirectory)/gopath' # Go workspace path
