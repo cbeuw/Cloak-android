@@ -36,7 +36,7 @@ steps:
   displayName: 'Set up the Go workspace'
 
 - script: |
-    wget "https://dl.google.com/android/repository/android-ndk-$(NDKVERSION)-linux-x86_64.zip" --output-document "$(Agent.BuildDirectory)/ndk-$(NDKVERSION).zip"
+    wget "https://dl.google.com/android/repository/android-ndk-$(NDKVERSION)-linux.zip" --output-document "$(Agent.BuildDirectory)/ndk-$(NDKVERSION).zip"
     unzip "$(Agent.BuildDirectory)/ndk-$(NDKVERSION).zip" -d '$(Agent.BuildDirectory)'
   displayName: 'Download NDK'
 
