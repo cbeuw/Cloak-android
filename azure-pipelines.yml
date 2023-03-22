@@ -15,25 +15,14 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  GOVERSION: '1.18'
-  NDKVERSION: 'r23b'
-  GOBIN:  '$(GOPATH)/bin' # Go binaries path
-  GOROOT: '$(Agent.BuildDirectory)/go' # Go installation path
-  GOPATH: '$(Agent.BuildDirectory)/gopath' # Go workspace path
+  NDKVERSION: 'r25c'
   ANDROID_NDK_HOME: '$(Agent.BuildDirectory)/android-ndk-$(NDKVERSION)' # NDK path
 
 steps:
-- script: |
-    mkdir -p '$(GOBIN)'
-    mkdir -p '$(GOPATH)/pkg'
-    mkdir -p '$(modulePath)'
-    shopt -s extglob
-    shopt -s dotglob
-    echo '##vso[task.prependpath]$(GOBIN)'
-    echo '##vso[task.prependpath]$(GOROOT)/bin'
-    wget "https://golang.org/dl/go$(GOVERSION).linux-amd64.tar.gz" --output-document "$(Agent.BuildDirectory)/go$(GOVERSION).tar.gz"
-    tar -C '$(Agent.BuildDirectory)' -xzf "$(Agent.BuildDirectory)/go$(GOVERSION).tar.gz"
-  displayName: 'Set up the Go workspace'
+- task: GoTool@0
+  inputs:
+    version: '1.20'
+  displayName: 'Set up Go tools'
 
 - script: |
     wget "https://dl.google.com/android/repository/android-ndk-$(NDKVERSION)-linux.zip" --output-document "$(Agent.BuildDirectory)/ndk-$(NDKVERSION).zip"
@@ -41,9 +30,7 @@ steps:
   displayName: 'Download NDK'
 
 - script: |
-    chmod +x ./gradlew
     pushd '$(Build.SourcesDirectory)/app/src'
-    chmod +x ./make.sh
     ./make.sh
     popd
   displayName: 'Cross compiling ck-client binaries'
