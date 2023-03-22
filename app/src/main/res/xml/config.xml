@@ -33,6 +33,10 @@
             android:key="CDNOriginHost"
             android:persistent="false"
             android:title="@string/cloak_cdn_origin_host" />
+        <EditTextPreference
+            android:key="CDNWsUrlPath"
+            android:persistent="false"
+            android:title="@string/cloak_cdn_ws_url_path" />
         <ListPreference
             android:key="BrowserSig"
             android:persistent="false"
