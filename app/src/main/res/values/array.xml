@@ -3,6 +3,7 @@
     <string-array name="browsers">
         <item>chrome</item>
         <item>firefox</item>
+        <item>safari</item>
     </string-array>
     <string-array name="algorithms">
         <item>plain</item>
