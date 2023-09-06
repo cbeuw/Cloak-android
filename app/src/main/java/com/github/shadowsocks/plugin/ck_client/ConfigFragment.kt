@@ -17,7 +17,7 @@ class ConfigFragment : PreferenceFragmentCompat() {
         val ary = arrayOf(Pair("ProxyMethod","shadowsocks"), Pair("EncryptionMethod","plain"),
                 Pair("Transport", "direct"), Pair("UID", ""), Pair("PublicKey",""), Pair("ServerName", "bing.com"),
                 Pair("AlternativeNames", ""), Pair("CDNOriginHost", ""), Pair("CDNWsUrlPath", ""), Pair("NumConn","4"),
-                Pair("BrowserSig", "chrome"), Pair("StreamTimeout","300"), Pair("KeepAlive", "0"))
+                Pair("BrowserSig", "chrome"), Pair("StreamTimeout","300"), Pair("KeepAlive", "0"), Pair("RemoteHost", ""))
         for (element in ary) {
             val key = element.first
             val defaultValue = element.second
