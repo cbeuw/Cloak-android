@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.github.shadowsocks.plugin.ck_client">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         tools:replace="android:theme"
@@ -32,7 +31,8 @@
                 android:name="com.github.shadowsocks.plugin.default_config"
                 android:value="" />
         </provider>
-        <activity android:name="com.github.shadowsocks.plugin.ck_client.ConfigActivity">
+        <activity android:name="com.github.shadowsocks.plugin.ck_client.ConfigActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.github.shadowsocks.plugin.ACTION_CONFIGURE" />
                 <category android:name="android.intent.category.DEFAULT" />
