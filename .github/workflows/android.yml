@@ -1,6 +1,6 @@
 name: Release APK
 
-on: [push, pull_request]
+on: push
 
 permissions:
   id-token: write
