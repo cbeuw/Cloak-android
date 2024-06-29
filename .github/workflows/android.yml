@@ -28,6 +28,12 @@ jobs:
         ndk-version: r26d
         link-to-sdk: true
 
+    - name: Compile Go libs
+      run: |
+        pushd 'app/src'
+        ./make.sh
+        popd
+
     - name: Build with Gradle
       run: ./gradlew --no-daemon assembleRelease
 
@@ -38,6 +44,8 @@ jobs:
         releaseDirectory: app/build/outputs/apk/release
         signingKeyBase64: ${{ secrets.SIGNING_KEY }}
         keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+      env:
+        BUILD_TOOLS_VERSION: "34.0.0"
 
     - name: Upload release files
       uses: softprops/action-gh-release@v2

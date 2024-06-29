@@ -6,7 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 
 android {
-    compileSdkVersion 29
+    compileSdk 34
+    buildToolsVersion "34.0.0"
     ndkVersion "21.3.6528147"
     defaultConfig {
         applicationId "com.github.shadowsocks.plugin.ck_client"
