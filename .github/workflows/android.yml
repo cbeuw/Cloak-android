@@ -44,6 +44,7 @@ jobs:
         releaseDirectory: app/build/outputs/apk/release
         signingKeyBase64: ${{ secrets.SIGNING_KEY }}
         keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+        alias: ${{ secrets.ALIAS }}
       env:
         BUILD_TOOLS_VERSION: "34.0.0"
 
