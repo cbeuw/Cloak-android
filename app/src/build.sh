@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -euxo pipefail
 
 function getHostTag() {
 	# Copyright (C) 2022 The Android Open Source Project
@@ -55,7 +55,6 @@ function getHostTag() {
 
 pushd ../..
 ANDROID_NDK_HOME="${ANDROID_NDK_HOME:-$(./gradlew -q printNDKPath)}"
-CK_RELEASE_TAG=v"$(./gradlew -q printVersionName)"
 popd
 
 while [ ! -d "$ANDROID_NDK_HOME" ]; do
@@ -76,17 +75,10 @@ ANDROID_X86_CC="$ANDROID_PREBUILT_TOOLCHAIN/bin/i686-linux-android${MIN_API}-cla
 ANDROID_X86_64_CC="$ANDROID_PREBUILT_TOOLCHAIN/bin/x86_64-linux-android${MIN_API}-clang"
 
 SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DEPS="$(pwd)/.deps"
-mkdir -p "$DEPS" "$SRC_DIR/main/jniLibs/armeabi-v7a" "$SRC_DIR/main/jniLibs/x86" "$SRC_DIR/main/jniLibs/arm64-v8a" "$SRC_DIR/main/jniLibs/x86_64"
+mkdir -p "$SRC_DIR/main/jniLibs/armeabi-v7a" "$SRC_DIR/main/jniLibs/x86" "$SRC_DIR/main/jniLibs/arm64-v8a" "$SRC_DIR/main/jniLibs/x86_64"
 
-cd "$DEPS"
-echo "Getting Cloak source code"
-rm -rf Cloak
-git clone https://github.com/cbeuw/Cloak
 cd Cloak
-git checkout tags/$CK_RELEASE_TAG
 go get ./...
-
 cd cmd/ck-client
 
 echo "Cross compiling ckclient for arm"

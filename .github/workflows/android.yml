@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+      with:
+        submodules: true
 
     - name: Set up Go
       uses: actions/setup-go@v5.0.1
@@ -36,7 +38,7 @@ jobs:
     - name: Compile Go libs
       run: |
         pushd 'app/src'
-        ./make.sh
+        ./build.sh
         popd
 
     - name: Build with Gradle

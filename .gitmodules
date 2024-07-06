@@ -1,0 +1,3 @@
+[submodule "app/src/Cloak"]
+	path = app/src/Cloak
+	url = https://github.com/cbeuw/Cloak

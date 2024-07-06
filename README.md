@@ -11,5 +11,5 @@ Shadowsocks plugin Cloak for Android
 ## Build Instructions
 
 1. Install the appropriate SDK & NDK versions in Android Studio's SDK manager
-2. Execute `cd app/src && ./make.sh`
+2. Execute `cd app/src && ./build.sh`
 3. Build with Android Studio
