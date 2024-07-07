@@ -53,14 +53,10 @@ function getHostTag() {
 #This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #You should have received a copy of the GNU General Public License along with this program. If not, see http://www.gnu.org/licenses/.
 
-pushd ../..
-ANDROID_NDK_HOME="${ANDROID_NDK_HOME:-$(./gradlew -q printNDKPath)}"
-popd
-
-while [ ! -d "$ANDROID_NDK_HOME" ]; do
-  echo "Path to ndk-bundle not found"
+if [ ! -d "$ANDROID_NDK_HOME" ]; then
+  echo "Path to NDK not found"
   exit -1
-done
+fi
 
 getHostTag
 MIN_API=21
@@ -82,19 +78,19 @@ go get ./...
 cd cmd/ck-client
 
 echo "Cross compiling ckclient for arm"
-env CGO_ENABLED=1 CC="$ANDROID_ARM_CC" GOOS=android GOARCH=arm GOARM=7 go build -ldflags="-s -w"
+env CGO_ENABLED=1 CC="$ANDROID_ARM_CC" GOOS=android GOARCH=arm GOARM=7 go build -trimpath -ldflags="-s -w -buildid="
 mv ck-client "$SRC_DIR/main/jniLibs/armeabi-v7a/libck-client.so"
 
 echo "Cross compiling ckclient for arm64"
-env CGO_ENABLED=1 CC="$ANDROID_ARM64_CC" GOOS=android GOARCH=arm64 go build -ldflags="-s -w"
+env CGO_ENABLED=1 CC="$ANDROID_ARM64_CC" GOOS=android GOARCH=arm64 go build -trimpath -ldflags="-s -w -buildid="
 mv ck-client "$SRC_DIR/main/jniLibs/arm64-v8a/libck-client.so"
 
 echo "Cross compiling ckclient for x86"
-env CGO_ENABLED=1 CC="$ANDROID_X86_CC" GOOS=android GOARCH=386 go build -ldflags="-s -w"
+env CGO_ENABLED=1 CC="$ANDROID_X86_CC" GOOS=android GOARCH=386 go build -trimpath -ldflags="-s -w -buildid="
 mv ck-client "$SRC_DIR/main/jniLibs/x86/libck-client.so"
 
 echo "Cross compiling ckclient for x86_64"
-env CGO_ENABLED=1 CC="$ANDROID_X86_64_CC" GOOS=android GOARCH=amd64 go build -ldflags="-s -w"
+env CGO_ENABLED=1 CC="$ANDROID_X86_64_CC" GOOS=android GOARCH=amd64 go build -trimpath -ldflags="-s -w -buildid="
 mv ck-client "$SRC_DIR/main/jniLibs/x86_64/libck-client.so"
 
 echo "Success"

@@ -8,7 +8,6 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdk 34
     buildToolsVersion "34.0.0"
-    ndkVersion "21.3.6528147"
     defaultConfig {
         applicationId "com.github.shadowsocks.plugin.ck_client"
         minSdkVersion 21
@@ -41,16 +40,4 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-}
-
-task printVersionName {
-    doLast {
-        println android.defaultConfig.versionName
-    }
-}
-
-task printNDKPath {
-    doLast {
-        println android.sdkComponents.ndkDirectory.get()
-    }
 }

@@ -30,16 +30,19 @@ jobs:
       uses: android-actions/setup-android@v3
 
     - name: Set up NDK
+      id: setup_ndk
       uses: nttld/setup-ndk@v1
       with:
         ndk-version: r26d
-        link-to-sdk: true
+        add-to-path: false
 
     - name: Compile Go libs
       run: |
         pushd 'app/src'
         ./build.sh
         popd
+      env:
+        ANDROID_NDK_HOME: ${{ steps.setup_ndk.outputs.ndk-path }}
 
     - name: Build with Gradle
       run: ./gradlew --no-daemon assembleRelease
@@ -54,6 +57,12 @@ jobs:
         alias: ${{ secrets.ALIAS }}
       env:
         BUILD_TOOLS_VERSION: "34.0.0"
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Signed app bundle
+        path: ${{steps.sign_app.outputs.signedReleaseFile}}
 
     - name: Attest APK
       uses: actions/attest-build-provenance@v1
