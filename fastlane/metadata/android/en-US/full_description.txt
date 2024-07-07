@@ -1,0 +1,3 @@
+Cloak is a pluggable transport that circumvents Deep Packet Inspection based Internet censorship.
+
+Shadowsocks-android is required, as well as a Cloak-compatible proxy server.
