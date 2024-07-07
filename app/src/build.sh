@@ -78,19 +78,19 @@ go get ./...
 cd cmd/ck-client
 
 echo "Cross compiling ckclient for arm"
-env CGO_ENABLED=1 CC="$ANDROID_ARM_CC" GOOS=android GOARCH=arm GOARM=7 go build -trimpath -ldflags="-s -w -buildid="
+env CGO_ENABLED=1 CC="$ANDROID_ARM_CC" GOOS=android GOARCH=arm GOARM=7 go build -buildvcs=false -trimpath -ldflags="-s -w -buildid="
 mv ck-client "$SRC_DIR/main/jniLibs/armeabi-v7a/libck-client.so"
 
 echo "Cross compiling ckclient for arm64"
-env CGO_ENABLED=1 CC="$ANDROID_ARM64_CC" GOOS=android GOARCH=arm64 go build -trimpath -ldflags="-s -w -buildid="
+env CGO_ENABLED=1 CC="$ANDROID_ARM64_CC" GOOS=android GOARCH=arm64 go build -buildvcs=false -trimpath -ldflags="-s -w -buildid="
 mv ck-client "$SRC_DIR/main/jniLibs/arm64-v8a/libck-client.so"
 
 echo "Cross compiling ckclient for x86"
-env CGO_ENABLED=1 CC="$ANDROID_X86_CC" GOOS=android GOARCH=386 go build -trimpath -ldflags="-s -w -buildid="
+env CGO_ENABLED=1 CC="$ANDROID_X86_CC" GOOS=android GOARCH=386 go build -buildvcs=false -trimpath -ldflags="-s -w -buildid="
 mv ck-client "$SRC_DIR/main/jniLibs/x86/libck-client.so"
 
 echo "Cross compiling ckclient for x86_64"
-env CGO_ENABLED=1 CC="$ANDROID_X86_64_CC" GOOS=android GOARCH=amd64 go build -trimpath -ldflags="-s -w -buildid="
+env CGO_ENABLED=1 CC="$ANDROID_X86_64_CC" GOOS=android GOARCH=amd64 go build -buildvcs=false -trimpath -ldflags="-s -w -buildid="
 mv ck-client "$SRC_DIR/main/jniLibs/x86_64/libck-client.so"
 
 echo "Success"
