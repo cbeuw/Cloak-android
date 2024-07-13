@@ -34,6 +34,7 @@ jobs:
       uses: nttld/setup-ndk@v1
       with:
         ndk-version: r26d
+        link-to-sdk: true
         add-to-path: false
 
     - name: Compile Go libs
