@@ -1,6 +1,10 @@
 # Cloak-android
 Shadowsocks plugin Cloak for Android
 
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+    alt="Get it on F-Droid"
+    height="80">](https://f-droid.org/packages/com.github.shadowsocks.plugin.ck_client)
+
 ## Requirements
 
 - Go 1.22
