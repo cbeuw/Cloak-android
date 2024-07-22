@@ -1,6 +1,12 @@
 # Cloak-android
 Shadowsocks plugin Cloak for Android
 
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/org.ligi.gobandroidhd.ai.gnugo/)
+
+Or download the latest APK from the [Releases Section](https://github.com/cbeuw/Cloak-android/releases/latest).
+
 ## Requirements
 
 - Go 1.22
