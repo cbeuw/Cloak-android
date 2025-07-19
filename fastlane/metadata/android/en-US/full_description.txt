@@ -1,3 +1,9 @@
-Cloak is a pluggable transport that circumvents Deep Packet Inspection based Internet censorship.
+A Cloak plugin for <a href='https://shadowsocks.org/en/index.html'>Shadowsocks</a>.
+
+Cloak is a universal pluggable transport that cryptographically obfuscates proxy traffic as legitimate HTTPS traffic, disguises the proxy server as a normal web server, multiplexes traffic through a fixed amount of TCP connections and provides multi-user usage control.
+
+Cloak works fundamentally by masquerading proxy traffic as normal web browsing traffic. This increases the collateral damage to censorship actions and therefore make it very difficult, if not impossible, for censors to selectively block censorship evasion tools and proxy servers without affecting services that the state may also heavily rely on.
+
+Details on how Cloak works can be <a href='https://github.com/cbeuw/Cloak'>found here</a>.
 
 Shadowsocks-android is required, as well as a Cloak-compatible proxy server.
